@@ -1,0 +1,24 @@
+---
+- hosts: localhost
+  become: True
+  tasks:
+    - name: update cache
+      package: update_cache=yes
+      changed_when: false
+    - name: "Installing pip"
+      package: name={{ item  }} state=present update_cache=no
+      with_items:
+        - python-pip
+        - git
+    - name: "Install python packages"
+      pip: name={{ item }}
+      with_items:
+        - flask
+        - Werkzeug
+    - name: "Cloning git repo "
+      git: repo=https://bitbucket.org/azneita/devops-challenge.git
+           dest=/webapps/devops
+           force=yes
+           recursive=no
+    - name: "Starting app"
+      command: python /webapps/devops/app.py
