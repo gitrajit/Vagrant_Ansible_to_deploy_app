@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 Vagrant.configure("2") do |config|
 config.vm.define "ansibleControl" do |ansibleControl|
-        ansibleControl.vm.box = "ubuntu/trusty64""
+        ansibleControl.vm.box = "ubuntu/trusty64"
         ansibleControl.vm.network "private_network", ip: "10.10.10.20"
         ansibleControl.vm.hostname ="DevOps"
         ansibleControl.vm.provider "virtualoadbalanceox" do |vb|
