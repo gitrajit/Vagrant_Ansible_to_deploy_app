@@ -6,6 +6,6 @@
 	Allow from all
 	</Directory>
 	
-	Errorlog "|bin/rotatelogs /var/www/devops/error.%Y-%m-%d.log 5M" 
-	CustomLog "|bin/rotatelogs /var/www/devops/access%Y-%m-%d.log 5M" combined
+	Errorlog "|/usr/bin/rotatelogs /var/www/devops/error.%Y-%m-%d.log 5M" 
+	CustomLog "|/usr/bin/rotatelogs /var/www/devops/access%Y-%m-%d.log 5M" combined
 </VirtualHost>
