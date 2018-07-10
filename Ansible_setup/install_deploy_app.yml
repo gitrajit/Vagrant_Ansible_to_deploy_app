@@ -1,5 +1,5 @@
 ---
-- hosts: localhost
+- hosts: all
   become: True
   tasks:
     - name: update cache
@@ -10,6 +10,10 @@
       with_items:
         - python-pip
         - git
+        - apache2
+        - libapache2-mod-wsgi
+        - apache2-utils
+
     - name: "Install python packages"
       pip: name={{ item }}
       with_items:
@@ -20,5 +24,28 @@
            dest=/webapps/devops
            force=yes
            recursive=no
-    - name: "Starting app"
-      command: python /webapps/devops/app.py
+    - name: "Creating symbolic link"
+      file:
+        src: "/webapps/devops/"
+        dest: "/var/www/devops"
+        state: link
+
+    - name: "copying wsgi file"
+      template: 
+        src: flask.wsgi.j2
+        dest: /var/www/devops/flask.wsgi
+
+    - template:
+        src: flask.config.j2
+        dest: /etc/apache2/sites-available/flask.conf
+
+    - command: "{{ item }}"
+      with_items:
+        - a2ensite flask.conf
+        - a2dissite 000-default.conf
+      notify:
+        - restart apache2
+
+  handlers:
+    - name: restart apache2
+      service: name=apache2 state=restarted

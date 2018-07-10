@@ -1,0 +1,11 @@
+<VirtualHost *:80>
+	serverName flask.com
+	WSGIScriptAlias / /var/www/devops/flask.wsgi
+	<Directory /var/www/devops>
+	Order allow,deny
+	Allow from all
+	</Directory>
+	
+	Errorlog "|bin/rotatelogs /var/www/devops/error.%Y-%m-%d.log 5M" 
+	CustomLog "|bin/rotatelogs /var/www/devops/access%Y-%m-%d.log 5M" combined
+</VirtualHost>
